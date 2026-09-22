@@ -1,0 +1,36 @@
+class Solution:
+    def reverseKGroup(self, head, k):
+        dummy = ListNode(0)
+        dummy.next = head
+
+        group_prev = dummy
+
+        while True:
+            # Find the kth node
+            kth = group_prev
+
+            for _ in range(k):
+                kth = kth.next
+
+                if kth is None:
+                    return dummy.next
+
+            # Node after the current group
+            group_next = kth.next
+
+            # Reverse the group
+            prev = group_next
+            curr = group_prev.next
+
+            while curr != group_next:
+                temp = curr.next
+                curr.next = prev
+                prev = curr
+                curr = temp
+
+            # Reconnect reversed group
+            temp = group_prev.next
+            group_prev.next = kth
+
+            # Move to the next group
+            group_prev = temp
